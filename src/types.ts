@@ -20,6 +20,7 @@ export interface Lead {
   contatado_em?: string | null
   respondeu_em?: string | null
   fechado_em?: string | null
+  valor_fechado?: number | null
 }
 
 export interface SearchFilters {
@@ -28,8 +29,9 @@ export interface SearchFilters {
   bairro: string
   nicho: string
   semSite: boolean
+  apenasComSite?: boolean
   apenasComTelefone?: boolean
+  tipoSite?: 'todos' | 'sem_site' | 'com_site'
 }
 
 export type TabType = 'dash' | 'busca' | 'leads' | 'kanban' | 'resp' | 'fech' | 'exp'
-

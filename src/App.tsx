@@ -117,14 +117,61 @@ export default function App() {
     }
   }
 
+  // Deletar lote de múltiplos leads selecionados
+  const handleDeleteBatchLeads = async (leadIds: string[]) => {
+    const idSet = new Set(leadIds)
+    const updatedList = leads.filter(
+      (item) => !(item.id && idSet.has(item.id)) && !idSet.has(item.place_id)
+    )
+    setLeads(updatedList)
+
+    try {
+      for (const id of leadIds) {
+        if (id.includes('/')) {
+          await sb.from('leads').delete().eq('place_id', id)
+        } else {
+          await sb.from('leads').delete().eq('id', id)
+        }
+      }
+    } catch (err) {
+      console.warn('Erro ao deletar lote no Supabase:', err)
+    }
+  }
+
+  // Deletar um nicho inteiro de leads
+  const handleDeleteNicho = async (nicho: string) => {
+    const updatedList = leads.filter((item) => item.nicho !== nicho)
+    setLeads(updatedList)
+
+    try {
+      await sb.from('leads').delete().eq('nicho', nicho)
+    } catch (err) {
+      console.warn('Erro ao deletar nicho no Supabase:', err)
+    }
+  }
+
   // Salvar novos leads da busca
   const handleSaveBatchLeads = async (newLeads: Lead[]) => {
-    const { error } = await sb
-      .from('leads')
-      .upsert(newLeads, { onConflict: 'place_id', ignoreDuplicates: true })
+    // Atualiza imediatamente o estado da aplicação para refletir no Dashboard, Kanban e Lista
+    setLeads((prev) => {
+      const existing = new Set(prev.map((l) => l.place_id))
+      const toAdd = newLeads.filter((l) => !existing.has(l.place_id))
+      return [...toAdd, ...prev]
+    })
 
-    if (error) throw error
-    await loadLeads()
+    try {
+      const { error } = await sb
+        .from('leads')
+        .upsert(newLeads, { onConflict: 'place_id', ignoreDuplicates: true })
+
+      if (error) {
+        console.warn('Aviso Supabase ao persistir leads:', error.message)
+      } else {
+        await loadLeads()
+      }
+    } catch (err) {
+      console.warn('Erro de rede ao salvar no Supabase:', err)
+    }
   }
 
   // Adicionar lead manual
@@ -239,6 +286,9 @@ export default function App() {
             <DashboardView
               leads={leads}
               onUpdateLead={handleUpdateLead}
+              onDeleteLead={handleDeleteLead}
+              onDeleteBatchLeads={handleDeleteBatchLeads}
+              onDeleteNicho={handleDeleteNicho}
               onNavigateToBusca={() => setTab('busca')}
               onExtractEmail={handleExtractEmail}
             />
@@ -264,6 +314,8 @@ export default function App() {
                 leads={leads}
                 onUpdateLead={handleUpdateLead}
                 onDeleteLead={handleDeleteLead}
+                onDeleteBatchLeads={handleDeleteBatchLeads}
+                onDeleteNicho={handleDeleteNicho}
                 onExtractEmail={handleExtractEmail}
               />
             </div>
@@ -300,6 +352,8 @@ export default function App() {
                 leads={leads.filter((l) => l.status === 'respondeu')}
                 onUpdateLead={handleUpdateLead}
                 onDeleteLead={handleDeleteLead}
+                onDeleteBatchLeads={handleDeleteBatchLeads}
+                onDeleteNicho={handleDeleteNicho}
                 onExtractEmail={handleExtractEmail}
                 initialStatusFilter="respondeu"
               />
@@ -312,7 +366,7 @@ export default function App() {
                 <div>
                   <h2 className="page-heading">Clientes Fechados / Ganhos</h2>
                   <p className="page-subheading">
-                    Lista de contratos e vendas fechadas com sucesso.
+                    Lista de contratos e vendas fechadas com sucesso. Acompanhe os valores negociados e faturamento gerado.
                   </p>
                 </div>
               </div>
@@ -320,6 +374,8 @@ export default function App() {
                 leads={leads.filter((l) => l.status === 'fechado')}
                 onUpdateLead={handleUpdateLead}
                 onDeleteLead={handleDeleteLead}
+                onDeleteBatchLeads={handleDeleteBatchLeads}
+                onDeleteNicho={handleDeleteNicho}
                 onExtractEmail={handleExtractEmail}
                 initialStatusFilter="fechado"
               />

@@ -54,7 +54,7 @@ export function Sidebar({
     },
     {
       id: 'busca',
-      label: 'Buscar / Nichos',
+      label: 'Buscar Nichos',
       mobileLabel: 'Buscar',
       icon: <IconSearch size={20} />,
       badge: 'Livre',

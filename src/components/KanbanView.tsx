@@ -51,6 +51,10 @@ export function KanbanView({ leads, onUpdateLead }: KanbanViewProps) {
       <div className="kanban-columns-row">
         {columns.map((col) => {
           const colLeads = leads.filter((l) => l.status === col.id)
+          const colRevenue = col.id === 'fechado'
+            ? colLeads.reduce((acc, l) => acc + (Number(l.valor_fechado) || 0), 0)
+            : 0
+
           return (
             <div key={col.id} className="kanban-column">
               <div className="kanban-column-header">
@@ -58,7 +62,14 @@ export function KanbanView({ leads, onUpdateLead }: KanbanViewProps) {
                   <span className="column-dot" style={{ backgroundColor: col.color }} />
                   <strong className="column-title">{col.label}</strong>
                 </div>
-                <span className="column-badge-count">{colLeads.length}</span>
+                <div className="column-header-badges">
+                  {colRevenue > 0 && (
+                    <span className="column-revenue-badge">
+                      R$ {colRevenue.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
+                    </span>
+                  )}
+                  <span className="column-badge-count">{colLeads.length}</span>
+                </div>
               </div>
 
               <div className="kanban-cards-list">
@@ -80,6 +91,11 @@ export function KanbanView({ leads, onUpdateLead }: KanbanViewProps) {
                       </div>
 
                       <div className="kanban-card-tags">
+                        {lead.valor_fechado && (
+                          <span className="deal-valor-pill">
+                            R$ {Number(lead.valor_fechado).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                          </span>
+                        )}
                         {lead.site ? (
                           <span className="site-badge has-site-sm">
                             <IconGlobe size={11} /> Com Site

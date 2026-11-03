@@ -19,6 +19,7 @@ export function LeadModal({ isOpen, onClose, onSave }: LeadModalProps) {
   const [site, setSite] = useState('')
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<LeadStatus>('novo')
+  const [valorFechado, setValorFechado] = useState('')
   const [anotacoes, setAnotacoes] = useState('')
 
   if (!isOpen) return null
@@ -38,6 +39,7 @@ export function LeadModal({ isOpen, onClose, onSave }: LeadModalProps) {
       site: site.trim() || null,
       email: email.trim() || null,
       status,
+      valor_fechado: status === 'fechado' && valorFechado ? parseFloat(valorFechado) : null,
       anotacoes: anotacoes.trim(),
       capturado_em: new Date().toISOString(),
       maps_url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

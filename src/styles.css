@@ -73,7 +73,7 @@ body {
   display: block;
 }
 .mobile-only {
-  display: none;
+  display: none !important;
 }
 
 /* ================= Layout ================= */
@@ -99,7 +99,7 @@ body {
 
 /* ================= Sidebar (Desktop) ================= */
 .app-sidebar {
-  width: 250px;
+  width: 260px;
   background: var(--card-bg);
   border-right: 1px solid var(--border);
   display: flex;
@@ -183,6 +183,9 @@ body {
 
 .nav-label {
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nav-label.mobile-only {
@@ -355,7 +358,7 @@ body {
   color: var(--text-main);
   padding: 8px;
   border-radius: var(--radius-pill);
-  display: flex;
+  display: none !important;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -1152,6 +1155,16 @@ body {
   color: #fb923c;
 }
 
+.toggle-badge.badge-blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+[data-theme='dark'] .toggle-badge.badge-blue {
+  background: #1e3a8a44;
+  color: #60a5fa;
+}
+
 .btn-search-big {
   width: 100%;
   padding: 13px;
@@ -1163,6 +1176,50 @@ body {
   gap: 8px;
   border-radius: var(--radius-md);
   box-shadow: 0 4px 14px rgba(5, 150, 105, 0.24);
+}
+
+.search-results-card {
+  margin-top: 24px;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.results-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.results-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+}
+
+.results-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.results-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.results-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
 }
 
 /* ================= Buttons ================= */
@@ -1199,9 +1256,287 @@ body {
   background: var(--border);
 }
 
+.btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.btn-danger-outline {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.btn-danger-outline:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+[data-theme='dark'] .btn-danger-outline {
+  background: #450a0a44;
+  color: #f87171;
+  border-color: #7f1d1d;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* ================= Closed Deals Financial Header ================= */
+.closed-deals-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.03) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.deal-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: center;
+}
+
+.deal-summary-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.deal-summary-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.deal-summary-value.total-revenue {
+  color: #059669;
+}
+
+.deal-summary-value.ticket-medio {
+  color: #0d9488;
+}
+
+.deal-summary-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+}
+
+/* Checkbox & Selection */
+.th-checkbox, .td-checkbox {
+  width: 38px;
+  text-align: center;
+  padding: 8px 6px !important;
+}
+
+.lead-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.row-selected {
+  background: rgba(16, 185, 129, 0.07) !important;
+}
+
+/* Bulk Selection Action Bar */
+.bulk-selection-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bulk-info-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.bulk-count-badge {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bulk-actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Banner de Nicho Ativo & Botão de Excluir Nicho */
+.nicho-active-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #fef2f2;
+  border: 1px dashed #fca5a5;
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #991b1b;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+[data-theme='dark'] .nicho-active-banner {
+  background: #450a0a33;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+.btn-link-danger {
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: underline;
+}
+
+.btn-link-danger:hover {
+  color: #b91c1c;
+}
+
+.btn-delete-nicho-trigger {
+  color: #dc2626 !important;
+}
+
+/* Campo de Valor Negociado */
+.deal-value-cell {
+  min-width: 130px;
+}
+
+.deal-value-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  max-width: 140px;
+  transition: all 0.2s ease;
+}
+
+.deal-value-input-wrapper:focus-within {
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.15);
+}
+
+.currency-prefix {
+  font-size: 12px;
+  font-weight: 700;
+  color: #059669;
+}
+
+.deal-value-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+}
+
+.lead-deal-inline-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
+.deal-value-input-compact {
+  width: 75px;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  color: #059669;
+  font-weight: 700;
+  font-size: 12px;
+  outline: none;
+}
+
+.currency-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Modal Small */
+.modal-sm {
+  max-width: 440px !important;
+}
+
+.modal-body-pad {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.warning-box {
+  padding: 10px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  color: #991b1b;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+[data-theme='dark'] .warning-box {
+  background: #450a0a44;
+  border-color: #7f1d1d;
+  color: #f87171;
 }
 
 /* ================= Tables & Leads View ================= */
@@ -1561,6 +1896,44 @@ body {
   border-radius: var(--radius-pill);
   background: var(--card-bg);
   color: var(--text-main);
+}
+
+.column-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.column-revenue-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+[data-theme='dark'] .column-revenue-badge {
+  background: #064e3b44;
+  color: #34d399;
+  border-color: #065f46;
+}
+
+.deal-valor-pill {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+[data-theme='dark'] .deal-valor-pill {
+  background: #064e3b44;
+  color: #34d399;
+  border-color: #065f46;
 }
 
 .kanban-cards-list {
@@ -1936,6 +2309,9 @@ body {
     display: none !important;
   }
   .mobile-only {
+    display: flex !important;
+  }
+  .btn-theme-mobile {
     display: flex !important;
   }
 
@@ -2324,6 +2700,23 @@ body {
   }
 
   .export-actions-row .btn {
+    width: 100%;
+  }
+
+  /* RESULTADOS DE BUSCA NO TELEFONE */
+  .results-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .results-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .results-actions .btn {
     width: 100%;
   }
 }

@@ -9,6 +9,9 @@ import { IconFlame, IconSparkles, IconArrowUpRight, IconBuilding } from './Icons
 interface DashboardViewProps {
   leads: Lead[]
   onUpdateLead: (lead: Lead, updates: Partial<Lead>) => Promise<void>
+  onDeleteLead?: (lead: Lead) => Promise<void>
+  onDeleteBatchLeads?: (ids: string[]) => Promise<void>
+  onDeleteNicho?: (nicho: string) => Promise<void>
   onNavigateToBusca: () => void
   onExtractEmail?: (lead: Lead) => Promise<void>
 }
@@ -16,6 +19,9 @@ interface DashboardViewProps {
 export function DashboardView({
   leads,
   onUpdateLead,
+  onDeleteLead,
+  onDeleteBatchLeads,
+  onDeleteNicho,
   onNavigateToBusca,
   onExtractEmail,
 }: DashboardViewProps) {
@@ -91,6 +97,9 @@ export function DashboardView({
         <LeadsView
           leads={previewLeads}
           onUpdateLead={onUpdateLead}
+          onDeleteLead={onDeleteLead}
+          onDeleteBatchLeads={onDeleteBatchLeads}
+          onDeleteNicho={onDeleteNicho}
           onExtractEmail={onExtractEmail}
         />
       </div>

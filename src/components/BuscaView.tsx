@@ -33,6 +33,7 @@ export function BuscaView({ onSaveLeads, isDemo }: BuscaViewProps) {
     bairro: '',
     nicho: '',
     semSite: true,
+    apenasComSite: false,
     apenasComTelefone: false,
   })
 
@@ -124,9 +125,13 @@ export function BuscaView({ onSaveLeads, isDemo }: BuscaViewProps) {
   const buildWhatsAppLink = (lead: Lead) => {
     if (!lead.telefone) return null
     const cleanPhone = lead.telefone.replace(/\D/g, '').replace(/^55/, '')
-    const msg = encodeURIComponent(
-      `Olá, tudo bem? Encontrei o perfil da *${lead.nome}* no Google e gostaria de apresentar uma oportunidade de presença digital para o negócio de vocês em ${lead.cidade || 'sua região'}.`
-    )
+    const msg = lead.site
+      ? encodeURIComponent(
+          `Olá, tudo bem? Encontrei a *${lead.nome}* no Google e gostei muito da proposta de vocês. Notei algumas oportunidades para otimizar a conversão e captação de clientes em ${lead.cidade || 'sua região'}. Podemos conversar 5 minutinhos?`
+        )
+      : encodeURIComponent(
+          `Olá, tudo bem? Encontrei o perfil da *${lead.nome}* no Google e gostaria de apresentar uma oportunidade rápida de presença digital e captação de clientes para o negócio de vocês em ${lead.cidade || 'sua região'}.`
+        )
     return `https://wa.me/55${cleanPhone}?text=${msg}`
   }
 
@@ -252,13 +257,39 @@ export function BuscaView({ onSaveLeads, isDemo }: BuscaViewProps) {
               <input
                 type="checkbox"
                 checked={filters.semSite}
-                onChange={(e) => setFilters({ ...filters, semSite: e.target.checked })}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    semSite: e.target.checked,
+                    apenasComSite: e.target.checked ? false : filters.apenasComSite,
+                  })
+                }
               />
               <span className="toggle-checkbox-custom" />
               <span className="toggle-text">
                 <IconFlame size={15} className="flame-icon" />
                 <b>Apenas sem site cadastrado</b>
                 <span className="toggle-badge">Maior taxa de conversão</span>
+              </span>
+            </label>
+
+            <label className="toggle-checkbox-label">
+              <input
+                type="checkbox"
+                checked={filters.apenasComSite || false}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    apenasComSite: e.target.checked,
+                    semSite: e.target.checked ? false : filters.semSite,
+                  })
+                }
+              />
+              <span className="toggle-checkbox-custom" />
+              <span className="toggle-text">
+                <IconGlobe size={15} />
+                <b>Apenas com site cadastrado</b>
+                <span className="toggle-badge badge-blue">Tráfego & Redesign</span>
               </span>
             </label>
 

@@ -23,6 +23,7 @@ export function ExportView({ leads }: ExportViewProps) {
       Endereço: l.endereco || '',
       Telefone: l.telefone || '',
       'Status Funil': l.status,
+      'Valor Negociado (R$)': l.valor_fechado ? `R$ ${Number(l.valor_fechado).toFixed(2)}` : '',
       'Possui Site?': l.site ? 'Sim' : 'NÃO (Oportunidade)',
       'URL do Site': l.site || '',
       'E-mail': l.email || '',
